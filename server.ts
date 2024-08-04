@@ -1,8 +1,9 @@
-import express from 'express'
+import express, { Application } from 'express'
+import bookRouter from './routes/book.router'
+import app from './config/app.config'
 
-const app = express()
 
-const PORT : Number = 8001
+const PORT : Number = Number(process.env.PORT) || 8000
 
 
 app.listen(PORT, () => {
