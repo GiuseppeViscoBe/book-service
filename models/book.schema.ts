@@ -5,8 +5,7 @@ import IBook from './book.interface'
 const bookSchema = new Schema<IBook>({
     name : {
         type : String,
-        required : true,
-        unique : true
+        required : true
     },
     author : {
         type : String,

@@ -7,5 +7,8 @@ const express_1 = __importDefault(require("express"));
 const book_controller_1 = __importDefault(require("./book.controller"));
 const bookRouter = express_1.default.Router();
 bookRouter.get('/', book_controller_1.default.getBooks);
+bookRouter.get('/:id', book_controller_1.default.getBookById);
 bookRouter.post('/', book_controller_1.default.postBooks);
+bookRouter.put('/', book_controller_1.default.updateBook);
+bookRouter.delete('/:name', book_controller_1.default.deleteBook);
 exports.default = bookRouter;

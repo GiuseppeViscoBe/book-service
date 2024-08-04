@@ -16,32 +16,99 @@ const book_schema_1 = __importDefault(require("../models/book.schema"));
 const getBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const books = yield book_schema_1.default.find({});
-        res.status(200).json(books);
+        res.status(200).json({
+            count: books.length,
+            data: books,
+        });
     }
     catch (error) {
-        console.log(error);
+        next(error);
+    }
+});
+const getBookById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const bookId = req.params.id;
+        const book = yield book_schema_1.default.findById(bookId);
+        res.status(200).json(book);
+    }
+    catch (error) {
+        next(error);
     }
 });
 const postBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const books = [
-        {
-            'name': 'mala',
-            'author': 'Francesca Fagnani'
-        },
-        {
-            'name': 'L ombra del vento',
-            'author': 'Zafon'
-        }
-    ];
     try {
-        yield book_schema_1.default.insertMany(books);
-        res.status(200).json(books);
+        const { name, author } = req.body;
+        const newBook = new book_schema_1.default({
+            name: name,
+            author: author,
+        });
+        const existingBook = yield book_schema_1.default.find({
+            name: name,
+        });
+        if (existingBook.length > 0) {
+            const error = new Error("Book already exists in the catalogue");
+            error.statusCode = 409;
+            throw error;
+        }
+        const savedBook = yield newBook.save();
+        //await Book.insertMany(books);
+        res.status(200).json(savedBook);
     }
     catch (error) {
-        console.log(error);
+        next(error);
+    }
+});
+const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { name, updatedName, updatedAuthor } = req.body;
+        const filter = {
+            name: name,
+        };
+        const update = {
+            name: updatedName,
+            author: updatedAuthor,
+        };
+        const existingBook = yield book_schema_1.default.find({
+            name: name,
+        });
+        if (existingBook.length == 0) {
+            const error = new Error("Book does not exists in the catalogue");
+            error.statusCode = 404;
+            throw error;
+        }
+        const updatedBook = yield book_schema_1.default.findOneAndUpdate(filter, update);
+        //await Book.insertMany(books);
+        res.status(200).json(updatedBook);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+const deleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { name } = req.params;
+        console.log('delete');
+        const existingBook = yield book_schema_1.default.find({
+            name: name,
+        });
+        if (existingBook.length < 0) {
+            const error = new Error("Book does not exists in the catalogue");
+            error.statusCode = 404;
+            throw error;
+        }
+        const deletedBook = yield book_schema_1.default.deleteOne({
+            name: name
+        });
+        res.status(200).json(deletedBook);
+    }
+    catch (error) {
+        next(error);
     }
 });
 exports.default = {
     getBooks,
-    postBooks
+    getBookById,
+    postBooks,
+    updateBook,
+    deleteBook
 };
