@@ -37,13 +37,15 @@ const getBookById = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 const postBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, author } = req.body;
+        const { title, author, publishYear } = req.body;
         const newBook = new book_schema_1.default({
-            name: name,
+            title: title,
             author: author,
+            publishYear: publishYear,
+            createdAt: Date.now()
         });
         const existingBook = yield book_schema_1.default.find({
-            name: name,
+            title: title,
         });
         if (existingBook.length > 0) {
             const error = new Error("Book already exists in the catalogue");
@@ -61,10 +63,12 @@ const postBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { updatedName, updatedAuthor } = req.body;
+        const { title, author, publishYear } = req.body;
         const update = {
-            name: updatedName,
-            author: updatedAuthor,
+            title: title,
+            author: author,
+            publishYear: publishYear,
+            updatedAt: Date.now()
         };
         const existingBook = yield book_schema_1.default.findById(id);
         if (existingBook == null) {

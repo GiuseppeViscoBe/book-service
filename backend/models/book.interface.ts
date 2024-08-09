@@ -1,8 +1,11 @@
 import { Schema, model, connect } from 'mongoose';
 
 interface IBook {
-    name : string,
-    author : string
+    title : string,
+    author : string,
+    publishYear : number,
+    createdAt : Date,
+    updatedAt : Date
 }
 
 export default IBook

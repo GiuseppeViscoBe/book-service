@@ -10,11 +10,11 @@ import EditBook from './pages/EditBook'
 const App = () => {
   return (
     <Routes>
-      <Route path='' element={<CreateBook />} />
-      <Route path='' element={<ShowBook />} />
-      <Route path='' element={<EditBook />} />
-      <Route path='' element={<Home />} />
-      <Route path='' element={} />
+      <Route path='books/create' element={<CreateBook />} />
+      <Route path='books/details/:id' element={<ShowBook />} />
+      <Route path='books/edit/:id' element={<EditBook />} />
+      <Route path='/' element={<Home />} />
+      <Route path='books/delete/:id' element={<DeleteBook />} />
     </Routes>
   )
 }

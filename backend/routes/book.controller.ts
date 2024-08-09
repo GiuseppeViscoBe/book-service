@@ -29,15 +29,17 @@ const getBookById = async (req: Request, res: Response, next: NextFunction) => {
 
 const postBooks = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, author } = req.body;
+    const { title, author , publishYear} = req.body;
 
     const newBook = new Book({
-      name: name,
+      title: title,
       author: author,
+      publishYear : publishYear,
+      createdAt : Date.now()
     });
 
     const existingBook = await Book.find({
-      name: name,
+      title: title,
     });
 
     if (existingBook.length > 0) {
@@ -49,6 +51,7 @@ const postBooks = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const savedBook = await newBook.save();
+
 
     //await Book.insertMany(books);
 
@@ -62,11 +65,13 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
 
     const {id} = req.params
-    const { updatedName, updatedAuthor } = req.body;
+    const { title, author , publishYear} = req.body;
 
     const update = {
-      name: updatedName,
-      author: updatedAuthor,
+      title: title,
+      author: author,
+      publishYear : publishYear,
+      updatedAt : Date.now()
     };
 
     const existingBook = await Book.findById(id);

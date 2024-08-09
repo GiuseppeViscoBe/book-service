@@ -10,7 +10,7 @@ connectDb()
 
 app.use(cors())
 app.use(express.json())
-app.use('/api',bookRouter)
+app.use('/api/books',bookRouter)
 app.use(errorHandler)
 
 export default app

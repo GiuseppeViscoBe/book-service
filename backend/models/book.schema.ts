@@ -3,13 +3,22 @@ import IBook from './book.interface'
 
 
 const bookSchema = new Schema<IBook>({
-    name : {
+    title : {
         type : String,
         required : true
     },
     author : {
         type : String,
         required : true
+    },
+    publishYear : {
+        type : Number
+    },
+    createdAt : {
+        type : Date
+    },
+    updatedAt : {
+        type : Date
     }
 })
 
